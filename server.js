@@ -19,6 +19,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 require('express-async-errors');
+const connectDB = require('./db/connect.js');
 
 //Index page (static HTML)
 app.route('/')
@@ -39,20 +40,33 @@ app.use(function(req, res, next) {
     .send('Not Found');
 });
 
-//Start our server and tests!
-const listener = app.listen(process.env.PORT || 3000, function () {
-  console.log('Your app is listening on port ' + listener.address().port);
-  if(process.env.NODE_ENV==='test') {
-    console.log('Running Tests...');
-    setTimeout(function () {
-      try {
-        runner.run();
-      } catch(e) {
-          console.log('Tests are not valid:');
-          console.error(e);
-      }
-    }, 1500);
+// Start the program by connecting to the database
+// and then starting the server
+(async function() {
+  try {
+    await connectDB(process.env.DB);
+    listener();
+  } catch(error) {
+    console.log(error);
   }
-});
+})();
+
+//Start our server and tests!
+const listener = function(){
+  return app.listen(process.env.PORT || 3000, function () {
+    console.log('Your app is listening on port ' + this.address().port);
+    if(process.env.NODE_ENV==='test') {
+      console.log('Running Tests...');
+      setTimeout(function () {
+        try {
+          runner.run();
+        } catch(e) {
+            console.log('Tests are not valid:');
+            console.error(e);
+        }
+      }, 1500);
+    }
+  });
+}
 
 module.exports = app; //for unit/functional testing
