@@ -40,10 +40,21 @@ const getBook = async function (req, res){
   //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
 };
 
-const addCommentOnBook = function(req, res){
+const addCommentOnBook = async function(req, res){
   let bookid = req.params.id;
   let comment = req.body.comment;
-  res.send("add comment to" + bookid + " comment: " + comment);
+  if (!comment) throw new BadRequestError("missing required field comment");
+
+  const book = await Book.findById(bookid);
+  if (!book) throw new NotFoundError("no book exists");
+  
+  const updatedBook = await Book.findByIdAndUpdate(
+    bookid,
+    { $push: { comments: comment } }, 
+    { new: true, runValidators: true }
+  );
+  
+  res.status(200).json(updatedBook);
   //json res format same as .get
 };
 
