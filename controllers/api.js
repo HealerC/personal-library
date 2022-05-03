@@ -13,10 +13,14 @@ const getAllBooks = async (req, res) => {
   res.status(200).json(bookList);
 };
 
-const addBook = function (req, res){
+//response will contain new book object including atleast _id and title
+const addBook = async function (req, res){
   let title = req.body.title;
-  res.send("addBook: " + title);
-  //response will contain new book object including atleast _id and title
+  if (!title) {
+    throw new BadRequestError("missing required field title");
+  }
+  const book = await Book.create({title});
+  res.status(201).json(book);
 };
 
 const deleteAllBooks = function(req, res){
