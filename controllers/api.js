@@ -26,7 +26,7 @@ const addBook = async function (req, res){
 const deleteAllBooks = async function(req, res){
   const delResponse = await Book.deleteMany({});
   if (!delResponse.deletedCount) {
-    throw new NotFoundError("no book exists");
+    throw new NotFoundError();
   }
   res.status(200).send("complete delete successful");
   //if successful response will be 'complete delete successful'
@@ -35,7 +35,7 @@ const deleteAllBooks = async function(req, res){
 const getBook = async function (req, res){
   let bookid = req.params.id;
   const book = await Book.findById(bookid);
-  if (!book) throw new NotFoundError("no book exists");
+  if (!book) throw new NotFoundError();
   res.status(200).json(book);
   //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
 };
@@ -46,7 +46,7 @@ const addCommentOnBook = async function(req, res){
   if (!comment) throw new BadRequestError("missing required field comment");
 
   const book = await Book.findById(bookid);
-  if (!book) throw new NotFoundError("no book exists");
+  if (!book) throw new NotFoundError();
   
   const updatedBook = await Book.findByIdAndUpdate(
     bookid,
@@ -62,7 +62,7 @@ const deleteBook = async function(req, res){
   let bookid = req.params.id;
   const delResponse = await Book.findByIdAndDelete(bookid);
   if (!delResponse) {
-    throw new NotFoundError("no book exists");
+    throw new NotFoundError();
   }
   res.status(200).send("delete successful");
   //if successful response will be 'delete successful'
