@@ -28,7 +28,7 @@ const deleteAllBooks = async function(req, res){
   if (!delResponse.deletedCount) {
     throw new NotFoundError("no book exists");
   }
-  res.status(200).send("delete successful");
+  res.status(200).send("complete delete successful");
   //if successful response will be 'complete delete successful'
 };
 
