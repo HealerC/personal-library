@@ -8,7 +8,7 @@ const getAllBooks = async (req, res) => {
   const bookList = books.map(book => ({
     _id: book._id,
     title: book.title,
-    commentcount: books.length
+    commentcount: book.comments.length
   }));
   res.status(200).json(bookList);
 };
