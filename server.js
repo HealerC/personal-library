@@ -20,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 require('express-async-errors');
 const connectDB = require('./db/connect.js');
+const errorHandlerMiddleware = require('./middlewares/error-handler.js');
 
 //Index page (static HTML)
 app.route('/')
@@ -39,6 +40,10 @@ app.use(function(req, res, next) {
     .type('text')
     .send('Not Found');
 });
+
+
+//Error handler Middleware
+app.use(errorHandlerMiddleware);
 
 // Start the program by connecting to the database
 // and then starting the server

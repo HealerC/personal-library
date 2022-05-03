@@ -1,15 +1,16 @@
 const Book = require('../models/Book.js');
+const {BadRequestError, NotFoundError} = require('../errors');
 
 //response will be array of book objects
 //json res format: [{"_id": bookid, "title": book_title, "commentcount": num_of_comments },...]
 const getAllBooks = async (req, res) => {
-    const books = await Book.find({});
-    const bookList = books.map(book => ({
-        _id: book._id,
-        title: book.title,
-        commentcount: books.length
-    }));
-    res.status(200).json(bookList);
+  const books = await Book.find({});
+  const bookList = books.map(book => ({
+    _id: book._id,
+    title: book.title,
+    commentcount: books.length
+  }));
+  res.status(200).json(bookList);
 };
 
 const addBook = function (req, res){
