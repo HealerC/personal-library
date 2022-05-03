@@ -23,8 +23,12 @@ const addBook = async function (req, res){
   res.status(201).json(book);
 };
 
-const deleteAllBooks = function(req, res){
-    res.send("delete all books");
+const deleteAllBooks = async function(req, res){
+  const delResponse = await Book.deleteMany({});
+  if (!delResponse.deletedCount) {
+    throw new NotFoundError("no book exists");
+  }
+  res.status(200).send("delete successful");
   //if successful response will be 'complete delete successful'
 };
 
