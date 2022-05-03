@@ -58,9 +58,13 @@ const addCommentOnBook = async function(req, res){
   //json res format same as .get
 };
 
-const deleteBook = function(req, res){
+const deleteBook = async function(req, res){
   let bookid = req.params.id;
-  res.send("delete book " + bookid);
+  const delResponse = await Book.findByIdAndDelete(bookid);
+  if (!delResponse) {
+    throw new NotFoundError("no book exists");
+  }
+  res.status(200).send("delete successful");
   //if successful response will be 'delete successful'
 };
 
