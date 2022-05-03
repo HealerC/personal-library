@@ -32,9 +32,11 @@ const deleteAllBooks = async function(req, res){
   //if successful response will be 'complete delete successful'
 };
 
-const getBook = function (req, res){
+const getBook = async function (req, res){
   let bookid = req.params.id;
-  res.send("get book " + bookid);
+  const book = await Book.findById(bookid);
+  if (!book) throw new NotFoundError("no book exists");
+  res.status(200).json(book);
   //json res format: {"_id": bookid, "title": book_title, "comments": [comment,comment,...]}
 };
 
