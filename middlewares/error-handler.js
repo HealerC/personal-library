@@ -1,5 +1,3 @@
-const CustomError = require('../errors/custom-error.js');
-
 const errorHandler = (err, req, res, next) => {
   const customError = {
     statusCode: err.statusCode || 500,
@@ -18,8 +16,7 @@ const errorHandler = (err, req, res, next) => {
     customError.message = "required field(s) missing";
   }
   
-  // ~Default error code because of fcc testing~
-  
-  return res.status(customError.statusCode).send(customError.message);
+  // Default error code because of fcc testing
+  return res.send(customError.message);
 }
 module.exports = errorHandler;
